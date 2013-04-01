@@ -11,9 +11,9 @@ TIVSM_API_RPM := $(CURDIR)/../TIVsm-API.i386.rpm
 TIVSM_ITCAT := $T/opt/tivoli/tsm/client/lang/IT_IT/dsmc.hlp
 TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.IT_IT.i386.rpm
 GSK_CRYPT := $T/usr/local/ibm/gsk8/lib/C/icc/icclib/libicclib.so
-GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt32-8.0.13.3.linux.x86.rpm
+GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt32-8.0.13.4.linux.x86.rpm
 GSK_SSL := $T/usr/local/ibm/gsk8/lib/libgsk8km.so
-GSK_SSL_RPM := $(CURDIR)/../gskssl32-8.0.13.3.linux.x86.rpm
+GSK_SSL_RPM := $(CURDIR)/../gskssl32-8.0.13.4.linux.x86.rpm
 
 clean:
 	dh_testdir
