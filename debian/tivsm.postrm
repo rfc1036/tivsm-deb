@@ -1,0 +1,37 @@
+#!/bin/sh -e
+
+TIVINVFILE="TIVTSMBAC0504.SYS2"
+
+remove_etc_files() {
+  rm -f /etc/TIVGUID /etc/adsm/TSM.PWD /etc/dsm.sys /etc/dsm.opt
+  rmdir /etc/adsm/ 2> /dev/null || true
+}
+
+remove_inventory_file() {
+  local TIVINV_DIR=/opt/tivoli/tsm/tivinv
+  rm -f "$TIVINV_DIR/$TIVINVFILE"
+  rmdir $TIVINV_DIR /opt/tivoli/tsm/ /opt/tivoli/ 2> /dev/null || true
+}
+
+case "$1" in
+    purge)
+    remove_etc_files
+    remove_inventory_file
+    ;;
+
+    remove)
+    ldconfig
+    ;;
+
+    upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    ;;
+
+    *)
+    echo "$0 called with unknown argument '$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

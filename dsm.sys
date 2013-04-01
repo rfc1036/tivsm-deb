@@ -1,0 +1,29 @@
+ServerName tsm
+   CommMethod		TCPIP
+   TCPPort		1500
+   TCPServerAddress	tivoli05.example.net
+
+   PasswordAccess	Generate
+
+   SchedLogName		/var/log/dsm.log
+   SchedLogRetention	10 D
+   ErrorLogname		/var/log/dsmerror.log
+   ErrorLogRetention	10 D 
+
+*   PreScheduleCmd	"/usr/local/sbin/tsm_preschedule"
+
+   Exclude.dir		/tmp
+   Exclude.dir		/var/tmp
+   Exclude.dir		/var/cache/apt
+   Exclude.dir		/var/cache/debconf
+   Exclude.dir		/var/cache/locate
+   Exclude.dir		/var/cache/man
+   Exclude.dir		/var/cache/nscd
+   Exclude.dir		/var/lib/php5
+   Exclude.dir		/var/lib/mlocate
+   Exclude.dir		/var/lib/sendmail
+   Exclude.dir		/var/qmail/queue
+   Exclude.dir		/var/run
+   Exclude.dir		/var/spool/mqueue
+   Exclude.dir		/var/spool/postfix
+

@@ -1,0 +1,44 @@
+#!/bin/sh -e
+
+# FIXME: the name needs to be updated here and in postrm for each upstream
+# release, it should be generated programatically.
+TIVINVFILE="TIVTSMBAC0504.SYS2"
+
+create_dsm_sys() {
+  [ -e /etc/dsm.sys ] && return
+  cp /usr/share/doc/tivsm/examples/dsm.sys /etc/
+
+  local nodename=$(hostname --fqdn || true)
+  [ "$nodename" ] || return
+  printf "   NodeName\t\t$nodename\n\n" >> /etc/dsm.sys
+}
+
+create_inventory_file() {
+  local TIVINV_DIR=/opt/tivoli/tsm/tivinv
+  [ -e "$TIVINV_DIR/$TIVINVFILE" ] && return
+
+  rm -f "$TIVINV_DIR/TIVTSMBAC*.SYS2"
+  echo "                                                 " \
+    > $TIVINV_DIR/$TIVINVFILE
+  chmod 555 $TIVINV_DIR/$TIVINVFILE
+}
+
+case "$1" in
+    configure)
+    ldconfig
+    create_dsm_sys
+    create_inventory_file
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+    echo "$0 called with unknown argument '$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

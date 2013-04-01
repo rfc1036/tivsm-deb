@@ -1,0 +1,73 @@
+#!/usr/bin/make -f
+SHELL+= -e
+
+TIVSM_BA := .stamp-ba
+TIVSM_BA_RPM := $(CURDIR)/../TIVsm-BA.i386.rpm
+TIVSM_API := .stamp-api
+TIVSM_API_RPM := $(CURDIR)/../TIVsm-API.i386.rpm
+TIVSM_ITCAT := .stamp-itcat
+TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.it_IT.i386.rpm
+
+D := $(CURDIR)/debian/tivsm
+T := $(CURDIR)/tmp
+
+clean:
+	dh_testdir
+	-rm -rf .stamp-* $T
+	dh_clean
+
+build: $T $(TIVSM_ITCAT) $(TIVSM_BA) $(TIVSM_API)
+
+$T:
+	mkdir $@
+
+$(TIVSM_BA): $(TIVSM_BA_RPM)
+	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
+	touch $@
+
+$(TIVSM_API): $(TIVSM_API_RPM)
+	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
+	touch $@
+
+$(TIVSM_ITCAT): $(TIVSM_ITCAT_RPM)
+	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
+	touch $@
+
+binary-arch: checkroot build
+	dh_testdir
+	dh_clean -k
+
+	dh_installdirs /etc/ /opt/tivoli/tsm/tivinv/
+	cp -a $T/* $D/
+
+	dh_installdocs
+	dh_installexamples dsm.sys
+
+	cd $D && find . -name '*.jar' | xargs rm
+	cd $D && find . -name '*.smp' | xargs rm
+	cd $D/opt/tivoli/tsm/client/ && rm -rf \
+		ba/bin/dsmj ba/bin/favicon.ico ba/bin/images/ \
+		api/bin/sample/ icc32/icc/ReadMe.txt \
+		ba/NOTICES.TXT ba/README_* ba/client_message.chg \
+		api/NOTICES.TXT api/README_*
+	cd $D && rm -rf usr/bin/dsmj
+
+	dh_link
+	dh_installinit --name=dsm
+	dh_installchangelogs
+	dh_compress
+	# ICC fails the self-test if modified!
+	#dh_strip
+	dh_fixperms --exclude=dsmtca
+	dh_installdeb
+	dh_gencontrol
+	dh_builddeb
+
+binary-indep:
+
+binary: binary-indep binary-arch
+
+checkroot:
+	test root = "`whoami`"
+
+.PHONY: binary binary-arch binary-indep build clean checkroot

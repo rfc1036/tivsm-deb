@@ -1,0 +1,63 @@
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:          dsm
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop the Tivoli Storage Manager.
+### END INIT INFO
+
+PATH='/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+DAEMON='/opt/tivoli/tsm/client/ba/bin/dsmc'
+PIDFILE='/var/run/dsmc.pid'
+NAME='dsmc'
+DESC='Tivoli Storage Manager'
+
+[ -x $DAEMON ] || exit 0
+
+export LANG=en_US
+export LC_ALL=en_US
+export LC_CTYPE=en_US
+export MALLOC_CHECK_=0
+
+case "$1" in
+  start)
+    if [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1; then
+    echo "$DESC is already running!"
+    exit 0
+  fi
+  echo -n "Starting $DESC: $NAME"
+  if start-stop-daemon --start --quiet --background \
+      --pidfile $PIDFILE --make-pidfile \
+      --exec $DAEMON -- schedule; then
+    sleep 1
+    if ! kill -0 $(cat $PIDFILE) >/dev/null 2>&1; then
+      echo " failed!"
+    else
+      echo "."
+    fi
+  else
+    echo " failed!"
+  fi
+  ;;
+
+  stop)
+  echo -n "Stopping $DESC: $NAME"
+  start-stop-daemon --stop --quiet --retry 10 --oknodo --pidfile $PIDFILE
+  rm -f $PIDFILE
+  echo "."
+  ;;
+
+  force-reload|restart)
+  $0 stop
+  $0 start
+  ;;
+
+  *)
+  echo "Usage: /etc/init.d/atd {start|stop|restart|force-reload}"
+  exit 1
+  ;;
+esac
+
+exit 0
