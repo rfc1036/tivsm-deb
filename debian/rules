@@ -1,41 +1,48 @@
 #!/usr/bin/make -f
 SHELL+= -e
 
-TIVSM_BA := .stamp-ba
-TIVSM_BA_RPM := $(CURDIR)/../TIVsm-BA.i386.rpm
-TIVSM_API := .stamp-api
-TIVSM_API_RPM := $(CURDIR)/../TIVsm-API.i386.rpm
-TIVSM_ITCAT := .stamp-itcat
-TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.it_IT.i386.rpm
-
 D := $(CURDIR)/debian/tivsm
 T := $(CURDIR)/tmp
 
+TIVSM_BA := $T/usr/bin/dsmc
+TIVSM_BA_RPM := $(CURDIR)/../TIVsm-BA.i386.rpm
+TIVSM_API := $T/opt/tivoli/tsm/client/api/bin/libApiDS.so
+TIVSM_API_RPM := $(CURDIR)/../TIVsm-API.i386.rpm
+TIVSM_ITCAT := $T/opt/tivoli/tsm/client/lang/IT_IT/dsmc.hlp
+TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.IT_IT.i386.rpm
+GSK_CRYPT := $T/usr/local/ibm/gsk8/lib/C/icc/icclib/libicclib.so
+GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt32-8.0.13.3.linux.x86.rpm
+GSK_SSL := $T/usr/local/ibm/gsk8/lib/libgsk8km.so
+GSK_SSL_RPM := $(CURDIR)/../gskssl32-8.0.13.3.linux.x86.rpm
+
 clean:
 	dh_testdir
-	-rm -rf .stamp-* $T
+	-rm -rf $T
 	dh_clean
 
-build: $T $(TIVSM_ITCAT) $(TIVSM_BA) $(TIVSM_API)
+build: $T $(TIVSM_ITCAT) $(TIVSM_BA) $(TIVSM_API) $(GSK_CRYPT) $(GSK_SSL)
 
 $T:
 	mkdir $@
 
 $(TIVSM_BA): $(TIVSM_BA_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
-	touch $@
 
 $(TIVSM_API): $(TIVSM_API_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
-	touch $@
 
 $(TIVSM_ITCAT): $(TIVSM_ITCAT_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
-	touch $@
+
+$(GSK_CRYPT): $(GSK_CRYPT_RPM)
+	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
+
+$(GSK_SSL): $(GSK_SSL_RPM)
+	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
 
 binary-arch: checkroot build
 	dh_testdir
-	dh_clean -k
+	dh_prep
 
 	dh_installdirs /etc/ /opt/tivoli/tsm/tivinv/
 	cp -a $T/* $D/
@@ -43,10 +50,15 @@ binary-arch: checkroot build
 	dh_installdocs
 	dh_installexamples dsm.sys
 
+	mv $D/usr/local/ibm/gsk8/lib/* $D/usr/lib/
+	mv $D/usr/local/ibm/gsk8/bin/* $D/usr/bin/
+	rm -rf $D/usr/local/ $D/usr/lib/*/icc/ReadMe.txt
+
 	cd $D && find . -name '*.jar' | xargs rm
 	cd $D && find . -name '*.smp' | xargs rm
 	cd $D/opt/tivoli/tsm/client/ && rm -rf \
 		ba/bin/dsmj ba/bin/favicon.ico ba/bin/images/ \
+		ba/bin/configFile ba/bin/commonFunctions ba/bin/*.sh \
 		api/bin/sample/ icc32/icc/ReadMe.txt \
 		ba/NOTICES.TXT ba/README_* ba/client_message.chg \
 		api/NOTICES.TXT api/README_*
@@ -57,7 +69,7 @@ binary-arch: checkroot build
 	dh_installchangelogs
 	dh_compress
 	# ICC fails the self-test if modified!
-	#dh_strip
+	dh_strip --exclude=/usr/lib/C/ --exclude=/usr/lib/N/
 	dh_fixperms --exclude=dsmtca
 	dh_installdeb
 	dh_gencontrol

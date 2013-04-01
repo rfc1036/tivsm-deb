@@ -2,11 +2,11 @@ Source: tivsm
 Section: admin
 Priority: extra
 Maintainer: Marco d'Itri <md@linux.it>
-Build-Depends: debhelper (>= 5), rpm
-Standards-Version: 3.8.3
+Build-Depends: debhelper (>= 7), rpm2cpio
+Standards-Version: 3.9.1
 
 Package: tivsm
 Architecture: any
-Depends: libstdc++5, ${misc:Depends}
+Depends: libstdc++6, ${misc:Depends}
 Description: TSM Client
  Tivoli Storage Manager Client.

@@ -2,7 +2,7 @@
 
 # FIXME: the name needs to be updated here and in postrm for each upstream
 # release, it should be generated programatically.
-TIVINVFILE="TIVTSMBAC0504.SYS2"
+TIVINVFILE="TIVTSMBAC0602.SYS2"
 
 create_dsm_sys() {
   [ -e /etc/dsm.sys ] && return

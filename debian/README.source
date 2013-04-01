@@ -5,17 +5,17 @@ If you get lost in the FTP site try starting from
 http://www-01.ibm.com/support/docview.wss?rs=663&uid=swg21239415 .
 
 Choose the directory with the latest release, e.g.:
-* ftp://ftp.software.ibm.com/storage/tivoli-storage-management/patches/client/v5r5/Linux/LinuxX86/v552/
-* ftp://ftp.software.ibm.com/storage/tivoli-storage-management/maintenance/client/v5r5/Linux/LinuxX86/v552/
+* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v6r2/Linux/LinuxX86/v621/
+* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v6r2/Linux/LinuxX86/v621/
 
 Download the files you need (the messages catalog is optional):
 
-  get 5.5.2.2-TIV-TSMBAC-LinuxX86.tar
-  get TIVsm-msg.it_IT.i386.rpm
+  get 6.2.1.1-TIV-TSMBAC-LinuxX86.tar
+  get TIVsm-msg.IT_IT.i386.rpm
 
-and extract the RPMs with:
+and extract the RPMs in the parent directory with:
 
-tar xf 5.5.2.2-TIV-TSMBAC-LinuxX86.tar
+tar xf 6.2.1.1-TIV-TSMBAC-LinuxX86.tar
 
 
 Then the package can be built as usual:
@@ -28,4 +28,10 @@ After stripping proprietary information from the package, source
 packages for public distribution can be built with:
 
 dpkg-buildpackage -us -uc -S
+
+
+The RPM packages scripts can be extracted with:
+
+rpm -qp --scripts package.rpm | less
+rpm -qp --triggers package.rpm | less
 

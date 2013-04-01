@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-TIVINVFILE="TIVTSMBAC0504.SYS2"
+TIVINVFILE="TIVTSMBAC0602.SYS2"
 
 remove_etc_files() {
   rm -f /etc/TIVGUID /etc/adsm/TSM.PWD /etc/dsm.sys /etc/dsm.opt
