@@ -1,19 +1,22 @@
 #!/usr/bin/make -f
 SHELL+= -e
 
+# uncomment to enable installing the VMWare plugins
+#HAVE_VMWARE = 1
+
 D := $(CURDIR)/debian/tivsm
 T := $(CURDIR)/tmp
 
 TIVSM_BA := $T/usr/bin/dsmc
-TIVSM_BA_RPM := $(CURDIR)/../TIVsm-BA.i386.rpm
-TIVSM_API := $T/opt/tivoli/tsm/client/api/bin/libApiDS.so
-TIVSM_API_RPM := $(CURDIR)/../TIVsm-API.i386.rpm
+TIVSM_BA_RPM := $(CURDIR)/../TIVsm-BA.x86_64.rpm
+TIVSM_API := $T/usr/lib64/libApiTSM64.so
+TIVSM_API_RPM := $(CURDIR)/../TIVsm-API64.x86_64.rpm
 TIVSM_ITCAT := $T/opt/tivoli/tsm/client/lang/IT_IT/dsmc.hlp
-TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.IT_IT.i386.rpm
-GSK_CRYPT := $T/usr/local/ibm/gsk8/lib/C/icc/icclib/libicclib.so
-GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt32-8.0.13.4.linux.x86.rpm
-GSK_SSL := $T/usr/local/ibm/gsk8/lib/libgsk8km.so
-GSK_SSL_RPM := $(CURDIR)/../gskssl32-8.0.13.4.linux.x86.rpm
+TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.IT_IT.x86_64.rpm
+GSK_CRYPT := $T/usr/local/ibm/gsk8_64/lib64/C/icc/icclib/libicclib080.so
+GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt64-8.0.14.11.linux.x86_64.rpm
+GSK_SSL := $T/usr/local/ibm/gsk8_64/lib64/libgsk8km_64.so
+GSK_SSL_RPM := $(CURDIR)/../gskssl64-8.0.14.11.linux.x86_64.rpm
 
 clean:
 	dh_testdir
@@ -44,33 +47,68 @@ binary-arch: checkroot build
 	dh_testdir
 	dh_prep
 
-	dh_installdirs /etc/ /opt/tivoli/tsm/tivinv/
+	dh_installdirs /etc/ /usr/lib/ /opt/tivoli/tsm/tivinv/
 	cp -a $T/* $D/
 
 	dh_installdocs
 	dh_installexamples dsm.sys
 
-	mv $D/usr/local/ibm/gsk8/lib/* $D/usr/lib/
-	mv $D/usr/local/ibm/gsk8/bin/* $D/usr/bin/
+	mv $D/usr/local/ibm/gsk8_64/lib64/* $D/usr/lib/
+	mv $D/usr/local/ibm/gsk8_64/bin/* $D/usr/bin/
 	rm -rf $D/usr/local/ $D/usr/lib/*/icc/ReadMe.txt
+
+	# the real file is in api/bin64/
+	mv $D/usr/lib64/* $D/usr/lib/
 
 	cd $D && find . -name '*.jar' | xargs rm
 	cd $D && find . -name '*.smp' | xargs rm
 	cd $D/opt/tivoli/tsm/client/ && rm -rf \
+		ba/bin/dsmcad ba/bin/rc.dsmcad \
+		api/properties/ ba/properties/ \
 		ba/bin/dsmj ba/bin/favicon.ico ba/bin/images/ \
 		ba/bin/configFile ba/bin/commonFunctions ba/bin/*.sh \
-		api/bin/sample/ icc32/icc/ReadMe.txt \
+		api/bin64/sample/ icc32/icc/ReadMe.txt \
 		ba/NOTICES.TXT ba/README_* ba/client_message.chg \
 		api/NOTICES.TXT api/README_*
-	cd $D && rm -rf usr/bin/dsmj
+	cd $D && rm -rf usr/bin/dsmcad etc/init.d/dsmcad usr/bin/dsmj \
+		opt/tivoli/tsm/license/ usr/lib64/
 
 	dh_link
+
+	# these libraries are used by the vmware plugins, and probably
+	# you want to use the system copies anyway
+	cd $D/opt/tivoli/tsm/client/api/bin64/ && rm -f \
+		libcrypto.so.0.9.8 libssl.so.0.9.8
+	cd $D/opt/tivoli/tsm/client/ba/bin/ && rm -f \
+		libcrypto.so.0.9.8 libssl.so.0.9.8 libcurl.so.4 \
+		libglib-2.0.so.0 libgobject-2.0.so.0 libgthread-2.0.so.0
+
+ifdef HAVE_VMWARE
+	chmod -x $D/opt/tivoli/tsm/client/ba/bin/dsmvddk.opt
+else
+	# Remove VMWare integration
+	cd $D/opt/tivoli/tsm/client/ && rm -rf \
+		ba/bin/dsmvddk.opt ba/bin/*.so.* ba/bin/*.so \
+		ba/bin/plugins64/ \
+		api/bin64/libTsmViSdk*.so api/bin64/libVM*.so
+endif
+
+	if cmp -s $D/opt/tivoli/tsm/client/api/bin64/dsmtca \
+		$D/opt/tivoli/tsm/client/ba/bin/dsmtca; then \
+	ln -sf ../../ba/bin/dsmtca $D/opt/tivoli/tsm/client/api/bin64/dsmtca; \
+	fi
+
 	dh_installinit --name=dsm
 	dh_installchangelogs
 	dh_compress
 	# ICC fails the self-test if modified!
 	dh_strip --exclude=/usr/lib/C/ --exclude=/usr/lib/N/
 	dh_fixperms --exclude=dsmtca
+	# with -X we avoid the hard dependencies needed by the vmware plugins
+	dh_shlibdeps \
+	  -l/opt/tivoli/tsm/client/api/bin64/:/opt/tivoli/tsm/client/ba/bin/ \
+	  -Xlibvix -XlibdiskLibPlugin.so -Xlibvmomi.so -Xlibgvmomi.so \
+	  -XlibTsmViSdk.so
 	dh_installdeb
 	dh_gencontrol
 	dh_builddeb

@@ -1,3 +1,9 @@
+tivsm (6.3.0.5-2) unstable; urgency=low
+
+  * Updated for 6.3.0.5.
+
+ -- Marco d'Itri <md@linux.it>  Sat, 02 Jun 2012 20:21:07 +0200
+
 tivsm (6.2.2.0-1) unstable; urgency=low
 
   * Updated for 6.2.2.0.

@@ -1,21 +1,21 @@
-This package expects to find in the parent directory the RPMs downloaded
-from IBM.
+This package expects to find in the parent directory the RPMs provided
+by IBM.
 
 If you get lost in the FTP site try starting from
-http://www-01.ibm.com/support/docview.wss?rs=663&uid=swg21239415 .
+http://www.ibm.com/support/docview.wss?rs=663&uid=swg21239415 .
 
 Choose the directory with the latest release, e.g.:
-* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v6r2/Linux/LinuxX86/v621/
-* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v6r2/Linux/LinuxX86/v621/
+* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v6r3/Linux/LinuxX86/BA/v630/
+* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v6r3/Linux/LinuxX86/BA/v630/
 
-Download the files you need (the messages catalog is optional):
+Download the files you need (the localized messages catalog is optional):
 
-  get 6.2.1.1-TIV-TSMBAC-LinuxX86.tar
+  get 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
   get TIVsm-msg.IT_IT.i386.rpm
 
 and extract the RPMs in the parent directory with:
 
-tar xf 6.2.1.1-TIV-TSMBAC-LinuxX86.tar
+tar xf 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
 
 
 Then the package can be built as usual:

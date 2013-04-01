@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-TIVINVFILE="TIVTSMBAC0602.SYS2"
+TIVINVFILE="TIVTSMBAC0603.SYS2"
 
 remove_etc_files() {
   rm -f /etc/TIVGUID /etc/adsm/TSM.PWD /etc/dsm.sys /etc/dsm.opt
@@ -10,7 +10,7 @@ remove_etc_files() {
 remove_inventory_file() {
   local TIVINV_DIR=/opt/tivoli/tsm/tivinv
   rm -f "$TIVINV_DIR/$TIVINVFILE"
-  rmdir $TIVINV_DIR /opt/tivoli/tsm/ /opt/tivoli/ 2> /dev/null || true
+  rmdir --ignore-fail-on-non-empty --parents $TIVINV_DIR 2> /dev/null || true
 }
 
 case "$1" in
@@ -20,7 +20,6 @@ case "$1" in
     ;;
 
     remove)
-    ldconfig
     ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
