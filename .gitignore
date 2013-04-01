@@ -1,0 +1,7 @@
+tmp/
+
+debian/files
+debian/tivsm.debhelper.log
+debian/tivsm.substvars
+debian/tivsm.*.debhelper
+debian/tivsm/
