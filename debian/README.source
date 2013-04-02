@@ -1,5 +1,5 @@
 This package expects to find in the parent directory the RPMs provided
-by IBM.
+by IBM. Make sure that only one release of each RPM file is present.
 
 If you get lost in the FTP site try starting from
 http://www.ibm.com/support/docview.wss?rs=663&uid=swg21239415 .
@@ -16,6 +16,10 @@ Download the files you need (the localized messages catalog is optional):
 and extract the RPMs in the parent directory with:
 
 tar xf 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
+rm 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
+
+If you use a localized messages catalog for a different language then 
+you must update the files names in debian/rules.
 
 
 Then the package can be built as usual:
@@ -30,7 +34,7 @@ packages for public distribution can be built with:
 dpkg-buildpackage -us -uc -S
 
 
-The RPM packages scripts can be extracted with:
+If needed, the RPM packages scripts can be examined with:
 
 rpm -qp --scripts package.rpm | less
 rpm -qp --triggers package.rpm | less

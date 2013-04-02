@@ -111,13 +111,17 @@ endif
 	  -XlibTsmViSdk.so
 	dh_installdeb
 	dh_gencontrol
+	dh_md5sums
 	dh_builddeb
 
 binary-indep:
 
 binary: binary-indep binary-arch
 
+build-arch: build
+build-indep: build
+
 checkroot:
 	test root = "`whoami`"
 
-.PHONY: binary binary-arch binary-indep build clean checkroot
+.PHONY: binary binary-arch binary-indep build build-arch build-indep clean checkroot

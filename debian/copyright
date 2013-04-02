@@ -1,5 +1,10 @@
 Documentation:
 http://publib.boulder.ibm.com/infocenter/tsminfo/v6r4/
 
-Proprietary.
+The content of this package, the TSM Client, is covered by an IBM
+proprietary license.
+Please consult the official IBM documentation for details.
+
+The Debian packaging was created by Marco d'Itri and is released to the
+public domain.
 

@@ -3,10 +3,16 @@ Section: admin
 Priority: extra
 Maintainer: Marco d'Itri <md@linux.it>
 Build-Depends: debhelper (>= 7), rpm2cpio
-Standards-Version: 3.9.3.1
+Standards-Version: 3.9.4.0
+Vcs-Git: git://github.com/rfc1036/tivsm-deb.git
+Vcs-Browser: https://github.com/rfc1036/tivsm-deb
+Homepage: http://www.ibm.com/software/products/us/en/tivostormana/
 
 Package: tivsm
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: TSM Client
- Tivoli Storage Manager Client.
+Description: Tivoli Storage Manager Client
+ This is an unofficial Debian package of the IBM Tivoli Storage Manager
+ Client.
+ .
+ The Java GUI is not part of this package.
