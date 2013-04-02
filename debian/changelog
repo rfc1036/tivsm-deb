@@ -1,3 +1,11 @@
+tivsm (6.4.0.4-1) unstable; urgency=low
+
+  * Updated for 6.4.0.4.
+  * Remove the tsmstats.* files too on purge.
+  * Improved the package documentation.
+
+ -- Marco d'Itri <md@linux.it>  Tue, 02 Apr 2013 07:13:08 +0200
+
 tivsm (6.3.0.5-2) unstable; urgency=low
 
   * Updated for 6.3.0.5.
