@@ -89,7 +89,7 @@ else
 	# Remove VMWare integration
 	cd $D/opt/tivoli/tsm/client/ && rm -rf \
 		ba/bin/dsmvddk.opt ba/bin/*.so.* ba/bin/*.so \
-		ba/bin/plugins64/ \
+		ba/bin/plugins64/ ba/bin/vmtsmvss/ \
 		api/bin64/libTsmViSdk*.so api/bin64/libVM*.so
 endif
 
