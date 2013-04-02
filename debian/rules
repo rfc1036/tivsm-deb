@@ -98,6 +98,12 @@ endif
 	ln -sf ../../ba/bin/dsmtca $D/opt/tivoli/tsm/client/api/bin64/dsmtca; \
 	fi
 
+	# create the symlinks for the localized message catalog(s)
+	for cat in `cd $D/opt/tivoli/tsm/client/lang/ && /bin/ls -1`; do \
+	  ln -s ../../lang/$$cat $D/opt/tivoli/tsm/client/api/bin64/ ; \
+	  ln -s ../../lang/$$cat $D/opt/tivoli/tsm/client/ba/bin/ ; \
+	done
+
 	dh_installinit --name=dsm
 	dh_installchangelogs
 	dh_compress

@@ -1,12 +1,9 @@
 /etc/dsm.sys /opt/tivoli/tsm/client/ba/bin/dsm.sys
 /etc/dsm.opt /opt/tivoli/tsm/client/ba/bin/dsm.opt
 
-/opt/tivoli/tsm/client/lang/IT_IT /opt/tivoli/tsm/client/api/bin64/IT_IT
+# optional: support the old Latin-9 encoding as well
 /opt/tivoli/tsm/client/lang/IT_IT /opt/tivoli/tsm/client/api/bin64/IT_IT@EURO
-/opt/tivoli/tsm/client/lang/EN_US /opt/tivoli/tsm/client/api/bin64/EN_US
-/opt/tivoli/tsm/client/lang/IT_IT /opt/tivoli/tsm/client/ba/bin/IT_IT
 /opt/tivoli/tsm/client/lang/IT_IT /opt/tivoli/tsm/client/ba/bin/IT_IT@EURO
-/opt/tivoli/tsm/client/lang/EN_US /opt/tivoli/tsm/client/ba/bin/EN_US
 
 /opt/tivoli/tsm/client/api/bin64/libgpfs.so /usr/lib/libgpfs.so
 /opt/tivoli/tsm/client/api/bin64/libdmapi.so /usr/lib/libdmapi.so
