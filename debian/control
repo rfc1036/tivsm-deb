@@ -10,7 +10,7 @@ Homepage: http://www.ibm.com/software/products/us/en/tivostormana/
 
 Package: tivsm
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base
 Description: Tivoli Storage Manager Client
  This is an unofficial Debian package of the IBM Tivoli Storage Manager
  Client.
