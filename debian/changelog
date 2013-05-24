@@ -1,3 +1,10 @@
+tivsm (6.4.0.4-2) unstable; urgency=low
+
+  * Converted the init script to lsb-base logging and added support for
+    the status action.
+
+ -- Marco d'Itri <md@linux.it>  Fri, 24 May 2013 03:44:30 +0200
+
 tivsm (6.4.0.4-1) unstable; urgency=low
 
   * Updated for 6.4.0.4.
