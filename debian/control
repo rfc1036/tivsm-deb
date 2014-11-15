@@ -9,7 +9,7 @@ Vcs-Browser: https://github.com/rfc1036/tivsm-deb
 Homepage: http://www.ibm.com/software/products/us/en/tivostormana/
 
 Package: tivsm
-Architecture: any
+Architecture: amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base
 Description: Tivoli Storage Manager Client
  This is an unofficial Debian package of the IBM Tivoli Storage Manager
