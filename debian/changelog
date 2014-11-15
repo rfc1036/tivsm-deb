@@ -1,3 +1,10 @@
+tivsm (7.1.1.0-1) unstable; urgency=medium
+
+  * Updated for 7.1.1.0.
+  * Package finally converted to arch amd64.
+
+ -- Marco d'Itri <md@linux.it>  Sat, 15 Nov 2014 03:51:24 +0100
+
 tivsm (6.4.0.4-2) unstable; urgency=low
 
   * Converted the init script to lsb-base logging and added support for

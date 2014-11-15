@@ -13,7 +13,7 @@ TIVSM_API := $T/usr/lib64/libApiTSM64.so
 TIVSM_API_RPM := $(CURDIR)/../TIVsm-API64.x86_64.rpm
 TIVSM_ITCAT := $T/opt/tivoli/tsm/client/lang/IT_IT/dsmc.hlp
 TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.IT_IT.x86_64.rpm
-GSK_CRYPT := $T/usr/local/ibm/gsk8_64/lib64/C/icc/icclib/libicclib080.so
+GSK_CRYPT := $T/usr/local/ibm/gsk8_64/lib64/libgsk8iccs_64.so
 GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt64-*.linux.x86_64.rpm
 GSK_SSL := $T/usr/local/ibm/gsk8_64/lib64/libgsk8km_64.so
 GSK_SSL_RPM := $(CURDIR)/../gskssl64-*.linux.x86_64.rpm
@@ -77,11 +77,12 @@ binary-arch: checkroot build
 
 	# these libraries are used by the vmware plugins, and probably
 	# you want to use the system copies anyway
-	cd $D/opt/tivoli/tsm/client/api/bin64/ && rm -f \
+	cd $D/opt/tivoli/tsm/client/api/bin64/ && rm \
 		libcrypto.so.0.9.8 libssl.so.0.9.8
-	cd $D/opt/tivoli/tsm/client/ba/bin/ && rm -f \
+	cd $D/opt/tivoli/tsm/client/ba/bin/ && rm \
 		libcrypto.so.0.9.8 libssl.so.0.9.8 libcurl.so.4 \
-		libglib-2.0.so.0 libgobject-2.0.so.0 libgthread-2.0.so.0
+		libglib-2.0.so.0 libgmodule-2.0.so.0 libgobject-2.0.so.0 \
+		libgthread-2.0.so.0
 
 ifdef HAVE_VMWARE
 	chmod -x $D/opt/tivoli/tsm/client/ba/bin/dsmvddk.opt
@@ -89,7 +90,8 @@ else
 	# Remove VMWare integration
 	cd $D/opt/tivoli/tsm/client/ && rm -rf \
 		ba/bin/dsmvddk.opt ba/bin/*.so.* ba/bin/*.so \
-		ba/bin/plugins64/ ba/bin/vmtsmvss/ \
+		ba/bin/plugins/ ba/bin/vmtsmvss/ ba/bin/vmscan/ \
+		ba/bin/lib64/libdiskLibPlugin.so \
 		api/bin64/libTsmViSdk*.so api/bin64/libVM*.so
 endif
 
