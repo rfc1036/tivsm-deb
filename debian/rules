@@ -94,17 +94,12 @@ else
 		api/bin64/libTsmViSdk*.so api/bin64/libVM*.so
 endif
 
-	if cmp -s $D/opt/tivoli/tsm/client/api/bin64/dsmtca \
-		$D/opt/tivoli/tsm/client/ba/bin/dsmtca; then \
-	ln -sf ../../ba/bin/dsmtca $D/opt/tivoli/tsm/client/api/bin64/dsmtca; \
-	fi
-
 	dh_installinit --name=dsm
 	dh_installchangelogs
 	dh_compress
+	dh_fixperms
 	# ICC fails the self-test if modified!
 	dh_strip --exclude=/usr/lib/x86_64-linux-gnu/C/ --exclude=/usr/lib/x86_64-linux-gnu/N/
-	dh_fixperms --exclude=dsmtca
 	# with -X we avoid the hard dependencies needed by the vmware plugins
 	dh_shlibdeps \
 	  -l/opt/tivoli/tsm/client/api/bin64/:/opt/tivoli/tsm/client/ba/bin/ \
