@@ -12,6 +12,10 @@ Homepage: https://www.ibm.com/support/knowledgecenter/en/SSEQVQ
 Package: tivsm
 Architecture: amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: gskcrypt64, gskssl64, tivsm-api64, tivsm-ba,
+  tivsm-apicit, tivsm-bacit, tivsm-bahdw, tivsm-jbb,
+Replaces: gskcrypt64, gskssl64, tivsm-api64, tivsm-ba,
+  tivsm-apicit, tivsm-bacit, tivsm-bahdw, tivsm-jbb,
 Description: Tivoli Storage Manager Client
  This is an unofficial Debian package of the IBM Tivoli Storage Manager
  Client.
