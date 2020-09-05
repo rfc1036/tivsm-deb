@@ -1,8 +1,15 @@
 #!/bin/sh -e
 
-# FIXME: the name needs to be updated here and in postrm for each upstream
-# release, it should be generated programatically.
-TIVINVFILE="TIVTSMBAC0604.SYS2"
+cleanup_on_upgrades() {
+  dpkg --compare-versions "$2" lt-nl 8.1.10.0~ || return 0
+
+  # delete the old Tivoli inventory files
+  local tivinv_dir='/opt/tivoli/tsm/tivinv'
+  rm -f $tivinv_dir/TIVTSMBAC*.SYS2
+  rmdir --ignore-fail-on-non-empty $tivinv_dir
+
+  return
+}
 
 create_dsm_sys() {
   [ -e /etc/dsm.sys ] && return
@@ -13,20 +20,10 @@ create_dsm_sys() {
   printf "   NodeName\t\t$nodename\n\n" >> /etc/dsm.sys
 }
 
-create_inventory_file() {
-  local TIVINV_DIR=/opt/tivoli/tsm/tivinv
-  [ -e "$TIVINV_DIR/$TIVINVFILE" ] && return
-
-  rm -f "$TIVINV_DIR/TIVTSMBAC*.SYS2"
-  echo "                                                 " \
-    > $TIVINV_DIR/$TIVINVFILE
-  chmod 555 $TIVINV_DIR/$TIVINVFILE
-}
-
 case "$1" in
     configure)
+    cleanup_on_upgrades "$@"
     create_dsm_sys
-    create_inventory_file
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

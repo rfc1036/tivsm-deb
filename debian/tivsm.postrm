@@ -1,29 +1,13 @@
 #!/bin/sh -e
 
-TIVINVFILE="TIVTSMBAC0604.SYS2"
-
 remove_etc_files() {
   rm -f /etc/TIVGUID /etc/adsm/TSM.PWD /etc/dsm.sys /etc/dsm.opt
   rmdir /etc/adsm/ 2> /dev/null || true
 }
 
-remove_inventory_file() {
-  local TSM_DIR=/opt/tivoli/tsm
-  rm -f $TSM_DIR/tivinv/$TIVINVFILE \
-    $TSM_DIR/client/ba/bin/tsmstats.ini $TSM_DIR/client/ba/bin/tsmstats.lck
-  (
-    cd /opt/
-    rmdir --ignore-fail-on-non-empty --parents \
-      ${TSM_DIR#/opt/}/tivinv \
-      ${TSM_DIR#/opt/}/client/ba/bin/ \
-      2> /dev/null || true
-  )
-}
-
 case "$1" in
     purge)
     remove_etc_files
-    remove_inventory_file
     ;;
 
     remove)

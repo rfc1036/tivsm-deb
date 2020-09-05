@@ -42,7 +42,7 @@ binary-arch: build
 	dh_testdir
 	dh_prep
 
-	dh_installdirs /etc/ /usr/lib/ /opt/tivoli/tsm/tivinv/
+	dh_installdirs /etc/ /usr/lib/
 	cp -a $T/* $D/
 
 	dh_installdocs
