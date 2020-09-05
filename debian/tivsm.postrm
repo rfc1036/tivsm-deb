@@ -1,24 +1,23 @@
 #!/bin/sh -e
 
-remove_etc_files() {
-  rm -f /etc/TIVGUID /etc/adsm/TSM.PWD /etc/dsm.sys /etc/dsm.opt
-  rmdir /etc/adsm/ 2> /dev/null || true
+remove_local_files() {
+  rm -rf /etc/TIVGUID /etc/adsm/ /etc/dsm.sys /etc/dsm.opt \
+    /var/log/dsmerror.log /var/log/dsminstr.log* /var/log/dsm.log \
+    /opt/tivoli/tsm/client/ba/bin/dsm.sys \
+    /opt/tivoli/tsm/client/ba/bin/dsm.opt \
+    /opt/tivoli/tsm/client/ba/bin/tsmstats.ini \
+    /opt/tivoli/tsm/client/ba/bin/tsmstats.lck
+  rmdir --ignore-fail-on-non-empty \
+    /opt/tivoli/tsm/client/ba/bin/ \
+    /opt/tivoli/tsm/client/ba/ \
+    /opt/tivoli/tsm/client/ \
+    /opt/tivoli/tsm/ \
+    /opt/tivoli/ || true
 }
 
 case "$1" in
     purge)
-    remove_etc_files
-    ;;
-
-    remove)
-    ;;
-
-    upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
-    ;;
-
-    *)
-    echo "$0 called with unknown argument '$1'" >&2
-    exit 1
+    remove_local_files
     ;;
 esac
 

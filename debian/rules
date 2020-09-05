@@ -59,40 +59,40 @@ binary-arch: build
 	mv $D/usr/local/ibm/gsk8_64/bin/* $D/usr/bin/
 	rm -rf $D/etc/ $D/usr/local/ $D/usr/lib/x86_64-linux-gnu/*/icc/ReadMe.txt
 
+	cd $D && find . -name '*.htm' | xargs rm
 	cd $D && find . -name '*.jar' | xargs rm
 	cd $D && find . -name '*.smp' | xargs rm
 	cd $D/opt/tivoli/tsm/client/ && rm -rf \
-		ba/bin/dsmcad ba/bin/rc.dsmcad \
+		ba/bin/dsmcad ba/bin/rc.dsmcad ba/bin/dsmcad.service \
 		api/properties/ ba/properties/ \
+		api/swidtag/ ba/swidtag/ \
 		ba/bin/dsmj ba/bin/favicon.ico ba/bin/images/ \
 		ba/bin/configFile ba/bin/commonFunctions ba/bin/*.sh \
-		api/bin64/sample/ icc32/icc/ReadMe.txt \
-		ba/NOTICES.TXT ba/README_* ba/client_message.chg \
-		api/NOTICES.TXT api/README_*
+		ba/bin/nasdcm.lic api/bin64/sample/ ba/client_message.chg
 	cd $D && rm -rf usr/bin/dsmcad etc/init.d/dsmcad usr/bin/dsmj \
 		opt/tivoli/tsm/license/
+
+	for dir in api/bin64/ ba/bin/; do \
+		cd $D/opt/tivoli/tsm/client/$$dir && \
+		rm -rf CS_CZ DE_DE ES_ES FR_FR HU_HU JA_JP KO_KR PL_PL PT_BR RU_RU ZH_CN ZH_TW ;\
+	done
 
 	dh_link
 
 	# these libraries are used by the vmware plugins, and probably
 	# you want to use the system copies anyway
-	cd $D/opt/tivoli/tsm/client/api/bin64/ && rm \
-		libcrypto.so.0.9.8 libssl.so.0.9.8
-	cd $D/opt/tivoli/tsm/client/ba/bin/ && rm \
-		libcrypto.so.0.9.8 libssl.so.0.9.8 libcurl.so.4 \
-		libglib-2.0.so.0 libgmodule-2.0.so.0 libgobject-2.0.so.0 \
-		libgthread-2.0.so.0
+	cd $D/opt/tivoli/tsm/client/api/bin64/ && \
+		rm -f libcrypto.so.* libssl.so.*
 
-ifdef HAVE_VMWARE
-	chmod -x $D/opt/tivoli/tsm/client/ba/bin/dsmvddk.opt
-else
+ifndef HAVE_VMWARE
 	# Remove VMWare integration
 	cd $D/opt/tivoli/tsm/client/ && rm -rf \
-		ba/bin/dsmvddk.opt ba/bin/*.so.* ba/bin/*.so \
+		ba/bin/*.so \
 		ba/bin/plugins/ ba/bin/vmtsmvss/ ba/bin/vmscan/ \
-		ba/bin/lib64/libdiskLibPlugin.so \
 		api/bin64/libTsmViSdk*.so api/bin64/libVM*.so
 endif
+
+	ln -sf ../../ba/bin/dsmcert $D/opt/tivoli/tsm/client/api/bin64/
 
 	dh_installinit --name=dsm
 	dh_installchangelogs
