@@ -7,6 +7,13 @@ prepare_upgrade() {
 
   rm -f $bin/EN_US $bin/IT_IT $bin/IT_IT@EURO
 
+  # move this file to stop it being deleted on upgrades: it was a symlink
+  # in the old package, but often it was replaced by a regular file
+  # with the actual configuration
+  if [ -f $bin/dsm.sys ]; then
+    mv $bin/dsm.sys $bin/dsm.sys.BACKUP
+  fi
+
   return
 }
 

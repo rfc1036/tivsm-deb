@@ -8,30 +8,67 @@ cleanup_on_upgrades() {
   rm -f $tivinv_dir/TIVTSMBAC*.SYS2
   rmdir --ignore-fail-on-non-empty $tivinv_dir
 
+  local bin='/opt/tivoli/tsm/client/ba/bin'
+
+  # restore the configuration which was backed up in preinst
+  if [ -f $bin/dsm.sys.BACKUP ]; then
+    mv $bin/dsm.sys.BACKUP $bin/dsm.sys
+  fi
+
+  # move /etc/dsm.sys if it is a regular file
+  if [ -f /etc/dsm.sys ]; then
+    # if it was the real configuration then move it to /opt/
+    if [ ! -e $bin/dsm.sys -o -L $bin/dsm.sys ]; then
+      mv /etc/dsm.sys $bin/dsm.sys
+    else
+      # or else move it away if it was ignored
+      mv /etc/dsm.sys /etc/dsm.sys.dpkg-bak
+      echo "WARNING: /etc/dsm.sys was ignored and has been renamed!"
+    fi
+  fi
+  [ -L /etc/dsm.sys ] || ln -s $bin/dsm.sys /etc/dsm.sys
+
+  # move /etc/dsm.opt if it is a regular file
+  if [ -f /etc/dsm.opt ]; then
+    if [ ! -e $bin/dsm.opt -o -L $bin/dsm.opt ]; then
+      mv /etc/dsm.opt $bin/dsm.opt
+    else
+      # or else move it away if it was ignored
+      mv /etc/dsm.opt /etc/dsm.opt.dpkg-bak
+      echo "WARNING: /etc/dsm.opt was ignored and has been renamed!"
+    fi
+  fi
+
+  # create an empty dsm.opt if it was missing
+  [ -e $bin/dsm.opt ] || : > $bin/dsm.opt
+
   return
 }
 
 create_dsm_sys() {
-  [ -e /etc/dsm.sys ] && return
-  cp /usr/share/doc/tivsm/examples/dsm.sys /etc/
+  # create the configuration only on the first install
+  [ "$2" ] && return
 
+  local bin=/opt/tivoli/tsm/client/ba/bin
+
+  [ -e $bin/dsm.opt ] || : > $bin/dsm.opt
+
+  [ -e /etc/dsm.sys ] || ln -s $bin/dsm.sys /etc/dsm.sys
+
+  # create the configuration file if missing
+  [ -e $bin/dsm.sys ] && return
+  cp $bin/dsm.sys.smp $bin/dsm.sys
+
+  # and add the hostname
   local nodename=$(hostname --fqdn || true)
-  [ "$nodename" ] || return
-  printf "   NodeName\t\t$nodename\n\n" >> /etc/dsm.sys
+  [ "$nodename" ] || return 0
+  printf "   NodeName\t\t$nodename\n\n" >> $bin/dsm.sys
 }
 
 case "$1" in
     configure)
     cleanup_on_upgrades "$@"
-    create_dsm_sys
-    ;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
-
-    *)
-    echo "$0 called with unknown argument '$1'" >&2
-    exit 1
+    create_dsm_sys "$@"
     ;;
 esac
 

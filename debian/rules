@@ -46,7 +46,7 @@ binary-arch: build
 	cp -a $T/* $D/
 
 	dh_installdocs
-	dh_installexamples dsm.sys
+	dh_installexamples
 
 	# update the symlinks because the directory containing them
 	# is being moved one level down
@@ -71,6 +71,8 @@ binary-arch: build
 		ba/bin/nasdcm.lic api/bin64/sample/ ba/client_message.chg
 	cd $D && rm -rf usr/bin/dsmcad etc/init.d/dsmcad usr/bin/dsmj \
 		opt/tivoli/tsm/license/
+
+	cp dsm.sys $D/opt/tivoli/tsm/client/ba/bin/dsm.sys.smp
 
 	for dir in api/bin64/ ba/bin/; do \
 		cd $D/opt/tivoli/tsm/client/$$dir && \
