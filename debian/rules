@@ -48,12 +48,16 @@ binary-arch: build
 	dh_installdocs
 	dh_installexamples dsm.sys
 
-	mv $D/usr/local/ibm/gsk8_64/lib64/* $D/usr/lib/
-	mv $D/usr/local/ibm/gsk8_64/bin/* $D/usr/bin/
-	rm -rf $D/usr/local/ $D/usr/lib/*/icc/ReadMe.txt
+	# update the symlinks because the directory containing them
+	# is being moved one level down
+	for file in $D/usr/lib64/*; do \
+		ln -sf "../$$(readlink $$file)" $$file ;\
+	done
+	mv $D/usr/lib64/ $D/usr/lib/x86_64-linux-gnu/
 
-	# the real file is in api/bin64/
-	mv $D/usr/lib64/* $D/usr/lib/
+	mv $D/usr/local/ibm/gsk8_64/lib64/* $D/usr/lib/x86_64-linux-gnu/
+	mv $D/usr/local/ibm/gsk8_64/bin/* $D/usr/bin/
+	rm -rf $D/etc/ $D/usr/local/ $D/usr/lib/x86_64-linux-gnu/*/icc/ReadMe.txt
 
 	cd $D && find . -name '*.jar' | xargs rm
 	cd $D && find . -name '*.smp' | xargs rm
@@ -66,7 +70,7 @@ binary-arch: build
 		ba/NOTICES.TXT ba/README_* ba/client_message.chg \
 		api/NOTICES.TXT api/README_*
 	cd $D && rm -rf usr/bin/dsmcad etc/init.d/dsmcad usr/bin/dsmj \
-		opt/tivoli/tsm/license/ usr/lib64/
+		opt/tivoli/tsm/license/
 
 	dh_link
 
@@ -99,7 +103,7 @@ endif
 	dh_installchangelogs
 	dh_compress
 	# ICC fails the self-test if modified!
-	dh_strip --exclude=/usr/lib/C/ --exclude=/usr/lib/N/
+	dh_strip --exclude=/usr/lib/x86_64-linux-gnu/C/ --exclude=/usr/lib/x86_64-linux-gnu/N/
 	dh_fixperms --exclude=dsmtca
 	# with -X we avoid the hard dependencies needed by the vmware plugins
 	dh_shlibdeps \

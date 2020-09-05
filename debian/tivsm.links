@@ -1,8 +1,8 @@
 /etc/dsm.sys /opt/tivoli/tsm/client/ba/bin/dsm.sys
 /etc/dsm.opt /opt/tivoli/tsm/client/ba/bin/dsm.opt
 
-/opt/tivoli/tsm/client/api/bin64/libgpfs.so /usr/lib/libgpfs.so
-/opt/tivoli/tsm/client/api/bin64/libdmapi.so /usr/lib/libdmapi.so
+/opt/tivoli/tsm/client/api/bin64/libgpfs.so /usr/lib/x86_64-linux-gnu/libgpfs.so
+/opt/tivoli/tsm/client/api/bin64/libdmapi.so /usr/lib/x86_64-linux-gnu/libdmapi.so
 
 /opt/tivoli/tsm/client/api/bin64/libtsmxerces-depdom.so.28.0 /opt/tivoli/tsm/client/api/bin64/libtsmxerces-depdom.so.28
 /opt/tivoli/tsm/client/api/bin64/libtsmxerces-c.so.28.0 /opt/tivoli/tsm/client/api/bin64/libtsmxerces-c.so.28
