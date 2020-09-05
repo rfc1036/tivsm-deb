@@ -1,5 +1,4 @@
 #!/usr/bin/make -f
-SHELL+= -e
 
 # uncomment to enable installing the VMWare plugins
 #HAVE_VMWARE = 1
@@ -16,12 +15,13 @@ GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt64-*.linux.x86_64.rpm
 GSK_SSL := $T/usr/local/ibm/gsk8_64/lib64/libgsk8km_64.so
 GSK_SSL_RPM := $(CURDIR)/../gskssl64-*.linux.x86_64.rpm
 
-clean:
-	dh_testdir
-	-rm -rf $T
-	dh_clean
+%:
+	dh $@
 
-build: $T $(TIVSM_BA) $(TIVSM_API) $(GSK_CRYPT) $(GSK_SSL)
+override_dh_auto_clean:
+	rm -rf $T
+
+override_dh_auto_build: $T $(TIVSM_BA) $(TIVSM_API) $(GSK_CRYPT) $(GSK_SSL)
 
 $T:
 	mkdir $@
@@ -38,15 +38,8 @@ $(GSK_CRYPT): $(GSK_CRYPT_RPM)
 $(GSK_SSL): $(GSK_SSL_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
 
-binary-arch: build
-	dh_testdir
-	dh_prep
-
-	dh_installdirs /usr/lib/
+override_dh_install:
 	cp -a $T/* $D/
-
-	dh_installdocs
-	dh_installexamples
 
 	# update the symlinks because the directory containing them
 	# is being moved one level down
@@ -79,8 +72,6 @@ binary-arch: build
 		rm -rf CS_CZ DE_DE ES_ES FR_FR HU_HU JA_JP KO_KR PL_PL PT_BR RU_RU ZH_CN ZH_TW ;\
 	done
 
-	dh_link
-
 	# these libraries are used by the vmware plugins, and probably
 	# you want to use the system copies anyway
 	cd $D/opt/tivoli/tsm/client/api/bin64/ && \
@@ -96,27 +87,17 @@ endif
 
 	ln -sf ../../ba/bin/dsmcert $D/opt/tivoli/tsm/client/api/bin64/
 
+override_dh_installsystemd:
 	dh_installsystemd --name=dsm
-	dh_installchangelogs
-	dh_compress
-	dh_fixperms
+
+override_dh_strip:
 	# ICC fails the self-test if modified!
 	dh_strip --exclude=/usr/lib/x86_64-linux-gnu/C/ --exclude=/usr/lib/x86_64-linux-gnu/N/
+
+override_dh_shlibdeps:
 	# with -X we avoid the hard dependencies needed by the vmware plugins
 	dh_shlibdeps \
 	  -l/opt/tivoli/tsm/client/api/bin64/:/opt/tivoli/tsm/client/ba/bin/ \
 	  -Xlibvix -XlibdiskLibPlugin.so -Xlibvmomi.so -Xlibgvmomi.so \
 	  -XlibTsmViSdk.so
-	dh_installdeb
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
 
-binary-indep:
-
-binary: binary-indep binary-arch
-
-build-arch: build
-build-indep: build
-
-.PHONY: binary binary-arch binary-indep build build-arch build-indep clean checkroot
