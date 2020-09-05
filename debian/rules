@@ -96,6 +96,7 @@ endif
 
 	ln -sf ../../ba/bin/dsmcert $D/opt/tivoli/tsm/client/api/bin64/
 
+	dh_installsystemd --name=dsm
 	dh_installchangelogs
 	dh_compress
 	dh_fixperms

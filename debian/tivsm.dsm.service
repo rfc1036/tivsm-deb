@@ -1,0 +1,15 @@
+[Unit]
+Description="IBM Spectrum Protect Client"
+Documentation=https://www.ibm.com/support/pages/node/319159
+ConditionPathExists=/etc/adsm/TSM.KDB
+After=local-fs.target network-online.target
+
+[Service]
+Type=simple
+Restart=on-failure
+Environment="LC_ALL=en_US.UTF-8"
+ExecStart=/opt/tivoli/tsm/client/ba/bin/dsmc SCHEDULE
+
+[Install]
+WantedBy=multi-user.target 
+
