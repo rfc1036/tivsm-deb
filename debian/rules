@@ -43,7 +43,7 @@ $(GSK_CRYPT): $(GSK_CRYPT_RPM)
 $(GSK_SSL): $(GSK_SSL_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
 
-binary-arch: checkroot build
+binary-arch: build
 	dh_testdir
 	dh_prep
 
@@ -128,8 +128,5 @@ binary: binary-indep binary-arch
 
 build-arch: build
 build-indep: build
-
-checkroot:
-	test root = "`whoami`"
 
 .PHONY: binary binary-arch binary-indep build build-arch build-indep clean checkroot
