@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+prepare_upgrade() {
+  dpkg --compare-versions "$2" lt-nl 8.1.10.0~ || return 0
+
+  local bin='/opt/tivoli/tsm/client/ba/bin'
+
+  rm -f $bin/EN_US $bin/IT_IT $bin/IT_IT@EURO
+
+  return
+}
+
+case "$1" in
+  upgrade)
+    prepare_upgrade "$@"
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

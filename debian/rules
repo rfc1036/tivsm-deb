@@ -11,8 +11,6 @@ TIVSM_BA := $T/usr/bin/dsmc
 TIVSM_BA_RPM := $(CURDIR)/../TIVsm-BA.x86_64.rpm
 TIVSM_API := $T/usr/lib64/libApiTSM64.so
 TIVSM_API_RPM := $(CURDIR)/../TIVsm-API64.x86_64.rpm
-TIVSM_ITCAT := $T/opt/tivoli/tsm/client/lang/IT_IT/dsmc.hlp
-TIVSM_ITCAT_RPM := $(CURDIR)/../TIVsm-msg.IT_IT.x86_64.rpm
 GSK_CRYPT := $T/usr/local/ibm/gsk8_64/lib64/libgsk8iccs_64.so
 GSK_CRYPT_RPM := $(CURDIR)/../gskcrypt64-*.linux.x86_64.rpm
 GSK_SSL := $T/usr/local/ibm/gsk8_64/lib64/libgsk8km_64.so
@@ -23,7 +21,7 @@ clean:
 	-rm -rf $T
 	dh_clean
 
-build: $T $(TIVSM_ITCAT) $(TIVSM_BA) $(TIVSM_API) $(GSK_CRYPT) $(GSK_SSL)
+build: $T $(TIVSM_BA) $(TIVSM_API) $(GSK_CRYPT) $(GSK_SSL)
 
 $T:
 	mkdir $@
@@ -32,9 +30,6 @@ $(TIVSM_BA): $(TIVSM_BA_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
 
 $(TIVSM_API): $(TIVSM_API_RPM)
-	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
-
-$(TIVSM_ITCAT): $(TIVSM_ITCAT_RPM)
 	cd $T && rpm2cpio $< | cpio --extract --verbose --make-directories --no-absolute-filenames --sparse
 
 $(GSK_CRYPT): $(GSK_CRYPT_RPM)
@@ -99,12 +94,6 @@ endif
 		$D/opt/tivoli/tsm/client/ba/bin/dsmtca; then \
 	ln -sf ../../ba/bin/dsmtca $D/opt/tivoli/tsm/client/api/bin64/dsmtca; \
 	fi
-
-	# create the symlinks for the localized message catalog(s)
-	for cat in `cd $D/opt/tivoli/tsm/client/lang/ && /bin/ls -1`; do \
-	  ln -s ../../lang/$$cat $D/opt/tivoli/tsm/client/api/bin64/ ; \
-	  ln -s ../../lang/$$cat $D/opt/tivoli/tsm/client/ba/bin/ ; \
-	done
 
 	dh_installinit --name=dsm
 	dh_installchangelogs
