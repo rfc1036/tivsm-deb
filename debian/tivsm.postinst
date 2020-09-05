@@ -3,6 +3,13 @@
 cleanup_on_upgrades() {
   dpkg --compare-versions "$2" lt-nl 8.1.10.0~ || return 0
 
+  if [ -e /etc/init.d/dsm ]; then
+    # stop the old daemon
+    invoke-rc.d dsm stop
+    # and unconditionally delete the old init script
+    rm -f /etc/init.d/dsm /etc/rc[0-9].d/[KS][0-9][0-9]dsm
+  fi
+
   # delete the old Tivoli inventory files
   local tivinv_dir='/opt/tivoli/tsm/tivinv'
   rm -f $tivinv_dir/TIVTSMBAC*.SYS2

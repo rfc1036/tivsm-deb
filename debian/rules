@@ -42,7 +42,7 @@ binary-arch: build
 	dh_testdir
 	dh_prep
 
-	dh_installdirs /etc/ /usr/lib/
+	dh_installdirs /usr/lib/
 	cp -a $T/* $D/
 
 	dh_installdocs
@@ -96,7 +96,6 @@ endif
 
 	ln -sf ../../ba/bin/dsmcert $D/opt/tivoli/tsm/client/api/bin64/
 
-	dh_installinit --name=dsm
 	dh_installchangelogs
 	dh_compress
 	dh_fixperms
