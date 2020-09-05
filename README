@@ -6,6 +6,6 @@ The package is distributed by the author only as a source package, since
 the legality of redistributing repackaged IBM binaries is dubious at best.
 The debian/README.source file explains how the binary package can be built.
 
-Development of this package is sponsored by Seeweb <http://www.seeweb.it/>.
+Development of this package is sponsored by Seeweb <https://www.seeweb.it/>.
 
 Marco d'Itri <md@linux.it>

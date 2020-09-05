@@ -1,41 +1,40 @@
 This package expects to find in the parent directory the RPMs provided
 by IBM. Make sure that only one release of each RPM file is present.
 
-If you get lost in the FTP site try starting from
-http://www.ibm.com/support/docview.wss?rs=663&uid=swg21239415 .
+If you get lost in the FTP site then you may try starting from
+https://www.ibm.com/support/pages/node/83723 .
+
+More information about the installation procedure is available in
+https://www.ibm.com/support/knowledgecenter/SSEQVQ_8.1.10/client/t_inst_ubuntu_x86_64client.html .
 
 Choose the directory with the latest release, e.g.:
-* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v6r3/Linux/LinuxX86/BA/v630/
-* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v6r3/Linux/LinuxX86/BA/v630/
+* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v8r1/Linux/LinuxX86/BA/v8110/
+* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v8r1/Linux/LinuxX86/BA/v8110/
 
-Download the files you need (the localized messages catalog is optional):
+Download in the parent directory the file you need:
 
-  get 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
-  get TIVsm-msg.IT_IT.i386.rpm
+  get 8.1.10.0-TIV-TSMBAC-LinuxX86.tar
 
-and extract the RPMs in the parent directory with:
+and extract the RPMs with:
 
-tar xf 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
-rm 6.3.0.5-TIV-TSMBAC-LinuxX86.tar
-
-If you use a localized messages catalog for a different language then 
-you must update the files names in debian/rules.
+  tar xf 8.1.10.0-TIV-TSMBAC-LinuxX86.tar
+  rm 8.1.10.0-TIV-TSMBAC-LinuxX86.tar
 
 
 Then the package can be built as usual:
 
-cd tivsm-*
-dpkg-buildpackage
+  cd tivsm
+  dpkg-buildpackage -T binary
 
 
 After stripping proprietary information from the package, source
 packages for public distribution can be built with:
 
-dpkg-buildpackage -us -uc -S
+  dpkg-buildpackage -us -uc -S
 
 
 If needed, the RPM packages scripts can be examined with:
 
-rpm -qp --scripts package.rpm | less
-rpm -qp --triggers package.rpm | less
+  rpm -qp --scripts package.rpm | less
+  rpm -qp --triggers package.rpm | less
 

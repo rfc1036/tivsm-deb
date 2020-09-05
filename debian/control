@@ -3,10 +3,10 @@ Section: admin
 Priority: extra
 Maintainer: Marco d'Itri <md@linux.it>
 Build-Depends: debhelper (>= 7), cpio, rpm2cpio
-Standards-Version: 3.9.6.0
-Vcs-Git: git://github.com/rfc1036/tivsm-deb.git
+Standards-Version: 4.5.0.3
+Vcs-Git: https://github.com/rfc1036/tivsm-deb.git
 Vcs-Browser: https://github.com/rfc1036/tivsm-deb
-Homepage: http://www.ibm.com/software/products/us/en/tivostormana/
+Homepage: https://www.ibm.com/support/knowledgecenter/en/SSEQVQ
 
 Package: tivsm
 Architecture: amd64
