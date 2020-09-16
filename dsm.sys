@@ -12,7 +12,6 @@ ServerName tsm
 
 *   PreScheduleCmd	"/usr/local/sbin/tsm_preschedule"
 
-   Exclude.dir		/dev/shm/
    Exclude.dir		/tmp/*
    Exclude.file		/tmp/*
    Exclude.dir		/var/tmp/*
@@ -28,6 +27,4 @@ ServerName tsm
    Exclude.file		/var/qmail/queue/.../*
    Exclude.file		/var/spool/mqueue/.../*
    Exclude.file		/var/spool/postfix/.../*
-   Exclude.file		/var/run/.../*
-   Exclude.file		/run/.../*
 
