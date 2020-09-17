@@ -92,7 +92,9 @@ override_dh_installsystemd:
 
 override_dh_strip:
 	# ICC fails the self-test if modified!
-	dh_strip --exclude=/usr/lib/x86_64-linux-gnu/C/ --exclude=/usr/lib/x86_64-linux-gnu/N/
+	dh_strip --no-automatic-dbgsym \
+		--exclude=/usr/lib/x86_64-linux-gnu/C/ \
+		--exclude=/usr/lib/x86_64-linux-gnu/N/
 
 override_dh_shlibdeps:
 	# with -X we avoid the hard dependencies needed by the vmware plugins
