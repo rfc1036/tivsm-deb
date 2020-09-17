@@ -52,6 +52,15 @@ cleanup_on_upgrades() {
   return
 }
 
+# convert TSM.PWD to the new format on upgrades
+convert_tsm_pwd() {
+  # if the old file exists...
+  [ -e /etc/adsm/TSM.PWD ] || return 0
+  # ... but not the new one, then try to run dsmc to convert it
+  [ -e /etc/adsm/TSM.KDB ] || dsmc < /dev/null > /dev/null || true
+  return 0
+}
+
 create_dsm_sys() {
   # create the configuration only on the first install
   [ "$2" ] && return
@@ -75,6 +84,7 @@ create_dsm_sys() {
 case "$1" in
     configure)
     cleanup_on_upgrades "$@"
+    convert_tsm_pwd "$@"
     create_dsm_sys "$@"
     ;;
 esac
