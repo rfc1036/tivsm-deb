@@ -1,3 +1,12 @@
+tivsm (8.1.10.0+1) UNRELEASED; urgency=medium
+
+  * Updated for the latest upstream release.
+  * Moved the configuration files out of /etc/ again.
+  * Replaced the init script with a systemd unit.
+  * Implemented support for replacing the official IBM packages.
+
+ -- Marco d'Itri <md@linux.it>  Thu, 17 Sep 2020 03:41:07 +0200
+
 tivsm (7.1.1.0-1) unstable; urgency=medium
 
   * Updated for 7.1.1.0.
