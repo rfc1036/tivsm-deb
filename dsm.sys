@@ -12,19 +12,22 @@ ServerName tsm
 
 *   PreScheduleCmd	"/usr/local/sbin/tsm_preschedule"
 
+   Exclude.dir		/lost+found/
+   Exclude.dir		/media/*
+   Exclude.dir		/mnt/*
    Exclude.dir		/tmp/*
    Exclude.file		/tmp/*
    Exclude.dir		/var/tmp/*
    Exclude.file		/var/tmp/*
-   Exclude.file		/var/cache/apt/.../*
-   Exclude.file		/var/cache/debconf/*
-   Exclude.file		/var/cache/locate/*
-   Exclude.file		/var/cache/man/.../*
-   Exclude.file		/var/cache/nscd/.../*
+   Exclude.file		/var/cache/.../*
+   Exclude.file		/var/lib/apt/lists/.../*
    Exclude.file		/var/lib/php5/.../*
+   Exclude.file		/var/lib/php/sessions/*
    Exclude.file		/var/lib/postfix/.../*
    Exclude.file		/var/lib/sendmail/.../*
+   Exclude.file		/var/log/sysstat/.../*
    Exclude.file		/var/qmail/queue/.../*
    Exclude.file		/var/spool/mqueue/.../*
+   Exclude.file		/var/spool/mqueue-client/.../*
    Exclude.file		/var/spool/postfix/.../*
 
