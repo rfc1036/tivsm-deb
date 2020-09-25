@@ -8,7 +8,7 @@ ServerName tsm
    SchedLogName		/var/log/dsm.log
    SchedLogRetention	10 D
    ErrorLogname		/var/log/dsmerror.log
-   ErrorLogRetention	10 D 
+   ErrorLogRetention	10 D
 
 *   PreScheduleCmd	"/usr/local/sbin/tsm_preschedule"
 
