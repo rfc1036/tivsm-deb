@@ -1,3 +1,9 @@
+tivsm (8.1.17.0+1) UNRELEASED; urgency=medium
+
+  * Updated for the latest upstream release.
+
+ -- Marco d'Itri <md@linux.it>  Tue, 20 Dec 2022 01:43:09 +0100
+
 tivsm (8.1.11.0+1) UNRELEASED; urgency=medium
 
   * Updated for the latest upstream release.
