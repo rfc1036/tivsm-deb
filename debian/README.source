@@ -8,8 +8,8 @@ More information about the installation procedure is available in
 https://www.ibm.com/support/knowledgecenter/SSEQVQ_8.1.10/client/t_inst_ubuntu_x86_64client.html .
 
 Choose the directory with the latest release, e.g.:
-* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v8r1/Linux/LinuxX86/BA/v8110/
-* ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v8r1/Linux/LinuxX86/BA/v8110/
+* https://public.dhe.ibm.com/storage/tivoli-storage-management/patches/client/v8r1/Linux/LinuxX86/BA/v8115/
+* https://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v8r1/Linux/LinuxX86/BA/v8117/
 
 Download in the parent directory the file you need:
 
