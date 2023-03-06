@@ -1,6 +1,7 @@
 tmp/
 
 debian/.debhelper/
+debian/debhelper-build-stamp
 debian/files
 debian/tivsm.substvars
 debian/tivsm.*.debhelper
