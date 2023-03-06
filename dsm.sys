@@ -20,6 +20,7 @@ ServerName tsm
    Exclude.dir		/var/tmp/*
    Exclude.file		/var/tmp/*
    Exclude.file		/var/cache/.../*
+   Include.file		/var/cache/debconf/*.dat
    Exclude.file		/var/lib/apt/lists/.../*
    Exclude.file		/var/lib/php5/.../*
    Exclude.file		/var/lib/php/sessions/*
@@ -30,4 +31,6 @@ ServerName tsm
    Exclude.file		/var/spool/mqueue/.../*
    Exclude.file		/var/spool/mqueue-client/.../*
    Exclude.file		/var/spool/postfix/.../*
+   Include.file		/var/spool/postfix/plesk/passwd.db
+   Include.file		/var/spool/postfix/plesk/passwd_db_key
 
