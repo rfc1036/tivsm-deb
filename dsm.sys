@@ -12,7 +12,7 @@ ServerName tsm
 
 *   PreScheduleCmd	"/usr/local/sbin/tsm_preschedule"
 
-   Exclude.dir		/lost+found/
+   Exclude.dir		/lost+found
    Exclude.dir		/media/*
    Exclude.dir		/mnt/*
    Exclude.dir		/tmp/*
