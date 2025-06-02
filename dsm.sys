@@ -15,6 +15,8 @@ ServerName tsm
    Exclude.dir		/lost+found
    Exclude.dir		/media/*
    Exclude.dir		/mnt/*
+   Exclude.dir		/home/.../.cache/
+   Exclude.dir		/root/.cache/
    Exclude.dir		/tmp/*
    Exclude.file		/tmp/*
    Exclude.dir		/var/tmp/*
